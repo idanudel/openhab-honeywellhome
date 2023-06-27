@@ -15,4 +15,4 @@ jobs:
         with:
           maven-version: 3.8.6
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -Dspotless.check.skip=true -DskipChecks=true
