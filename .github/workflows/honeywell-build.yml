@@ -10,5 +10,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+      - name: Set up Maven 3.8.6
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.6
       - name: Build with Maven
         run: mvn clean install
