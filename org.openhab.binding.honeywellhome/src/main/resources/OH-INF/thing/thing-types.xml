@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="honeywellhome"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+	<bridge-type id="account">
+		<label>Honeywell Home Account Binding Thing</label>
+		<description>Sample thing for Honeywell Home Account Binding</description>
+
+		<config-description>
+			<parameter name="consumerKey" type="text" required="true">
+				<label>Consumer Key</label>
+				<description>Consumer Key</description>
+			</parameter>
+			<parameter name="consumerSecret" type="text" required="true">
+				<context>password</context>
+				<label>Consumer Secret</label>
+				<description>Consumer Secret</description>
+			</parameter>
+			<parameter name="token" type="text" required="true">
+				<context>password</context>
+				<label>Token</label>
+				<description>Token</description>
+			</parameter>
+			<parameter name="refreshToken" type="text" required="true">
+				<context>password</context>
+				<label>Refresh Token</label>
+				<description>Refresh Token</description>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+	<thing-type id="thermostat">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="honeywellhomeaccount"/>
+		</supported-bridge-type-refs>
+		<label>Honeywell Home Thermostat Binding Thing</label>
+		<description>Sample thing for Honeywell Home Thermostat Binding</description>
+		<channels>
+			<channel id="coolSetPoint" typeId="coolSetPoint"/>
+			<channel id="heatSetpoint" typeId="heatSetpoint"/>
+			<channel id="thermostatSetpointStatus" typeId="thermostatSetpointStatus"/>
+			<channel id="heatCoolMode" typeId="heatCoolMode"/>
+			<channel id="mode" typeId="mode"/>
+		</channels>
+		<config-description>
+			<parameter name="locationId" type="text" required="true">
+				<label>Location Id</label>
+				<description>Location Id</description>
+			</parameter>
+			<parameter name="deviceId" type="text" required="true">
+				<label>Device Id</label>
+				<description>Device Id</description>
+			</parameter>
+			<parameter name="refreshInterval" type="integer" unit="s" min="1">
+				<label>Refresh Interval In Seconds</label>
+				<description>Interval the device is polled in sec.</description>
+				<default>20</default>
+				<advanced>true</advanced>
+			</parameter>
+		</config-description>
+
+	</thing-type>
+
+	<channel-type id="coolSetPoint">
+		<item-type>Number:Temperature</item-type>
+		<label>Cool Set Point</label>
+		<description>Cool Set Point for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="heatSetpoint">
+		<item-type>Number:Temperature</item-type>
+		<label>Heat Set Point</label>
+		<description>Heat Set Point for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="thermostatSetpointStatus">
+		<item-type>String</item-type>
+		<label>Current Thermostat Setpoint Status</label>
+		<description>Current Thermostat Setpoint Status for Honeywell Home Thermostat Binding</description>
+		<state readOnly="false" pattern="%s">
+			<options>
+				<option value="PermanentHold">Permanent Hold</option>
+			</options>
+		</state>
+	</channel-type>
+	<channel-type id="heatCoolMode">
+		<item-type>String</item-type>
+		<label>Heat/Cool Mode</label>
+		<description>Heat/Cool Mode for Honeywell Home Thermostat Binding</description>
+		<state readOnly="true" pattern="%s">
+			<options>
+				<option value="Off">Off</option>
+				<option value="Cool">Cool</option>
+				<option value="Heat">Heat</option>
+			</options>
+		</state>
+	</channel-type>
+	<channel-type id="mode">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Mode for Honeywell Home Thermostat Binding</description>
+		<state readOnly="false" pattern="%s">
+			<options>
+				<option value="Off">Off</option>
+				<option value="Cool">Cool</option>
+				<option value="Heat">Heat</option>
+			</options>
+		</state>
+	</channel-type>
+
+
+<!--	todo add channels to all thermostat data-->
+<!--	{-->
+<!--	"displayedOutdoorHumidity": 70,-->
+<!--	"vacationHold": {-->
+<!--	"enabled": false-->
+<!--	},-->
+<!--	"currentSchedulePeriod": {-->
+<!--	"day": "Monday",-->
+<!--	"period": "Home"-->
+<!--	},-->
+<!--	"scheduleCapabilities": {-->
+<!--	"availableScheduleTypes": [-->
+<!--	"None",-->
+<!--	"Geofenced",-->
+<!--	"TimedNorthAmerica"-->
+<!--	],-->
+<!--	"schedulableFan": false-->
+<!--	},-->
+<!--	"scheduleType": {-->
+<!--	"scheduleType": "Timed",-->
+<!--	"scheduleSubType": "NA"-->
+<!--	},-->
+<!--	"changeSource": {-->
+<!--	"by": "partner",-->
+<!--	"name": "openhab"-->
+<!--	},-->
+<!--	"scheduleStatus": "Pause",-->
+<!--	"allowedTimeIncrements": 15,-->
+<!--	"settings": {-->
+<!--	"hardwareSettings": {-->
+<!--	"brightness": 1,-->
+<!--	"maxBrightness": 5-->
+<!--	},-->
+<!--	"fan": {-->
+<!--	"allowedModes": [-->
+<!--	"On",-->
+<!--	"Auto",-->
+<!--	"Circulate"-->
+<!--	],-->
+<!--	"changeableValues": {-->
+<!--	"mode": "Auto"-->
+<!--	}-->
+<!--	},-->
+<!--	"temperatureMode": {-->
+<!--	"air": true-->
+<!--	},-->
+<!--	"specialMode": {},-->
+<!--	"devicePairingEnabled": true-->
+<!--	},-->
+<!--	"deviceOsVersion": "RCHT8612WF2005",-->
+<!--	"deviceClass": "Thermostat",-->
+<!--	"deviceType": "Thermostat",-->
+<!--	"deviceID": "LCC-B82CA02CE73E",-->
+<!--	"deviceInternalID": 5284605,-->
+<!--	"userDefinedDeviceName": "My Thermostat",-->
+<!--	"name": "My Thermostat",-->
+<!--	"isAlive": true,-->
+<!--	"isUpgrading": false,-->
+<!--	"isProvisioned": true,-->
+<!--	"macID": "B82CA02CE73E",-->
+<!--	"deviceSettings": {},-->
+<!--	"service": {-->
+<!--	"mode": "Up"-->
+<!--	},-->
+<!--	"deviceRegistrationDate": "2023-06-15T15:44:11.83",-->
+<!--	"dataSyncStatus": "Completed",-->
+<!--	"deviceSerialNo": "1848LBJ08321",-->
+<!--	"units": "Fahrenheit",-->
+<!--	"indoorTemperature": 78,-->
+<!--	"outdoorTemperature": 68.5,-->
+<!--	"allowedModes": [-->
+<!--	"Heat",-->
+<!--	"Off",-->
+<!--	"Cool"-->
+<!--	],-->
+<!--	"deadband": 0,-->
+<!--	"hasDualSetpointStatus": false,-->
+<!--	"minHeatSetpoint": 50,-->
+<!--	"maxHeatSetpoint": 90,-->
+<!--	"minCoolSetpoint": 50,-->
+<!--	"maxCoolSetpoint": 90,-->
+<!--	"changeableValues": {-->
+<!--	"mode": "Off",-->
+<!--	"heatSetpoint": 62,-->
+<!--	"coolSetpoint": 80,-->
+<!--	"thermostatSetpointStatus": "PermanentHold",-->
+<!--	"heatCoolMode": "Cool"-->
+<!--	},-->
+<!--	"operationStatus": {-->
+<!--	"mode": "EquipmentOff",-->
+<!--	"fanRequest": false,-->
+<!--	"circulationFanRequest": false-->
+<!--	},-->
+<!--	"deviceModel": "T5-T6"-->
+<!--	}-->
+
+
+</thing:thing-descriptions>
