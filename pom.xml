@@ -10,6 +10,12 @@
     <version>4.0.0-SNAPSHOT</version>
   </parent>
 
+  <scm>
+    <url>scm:git:https://github.com/idanudel/openhab-honeywellhome.git</url>
+    <connection>scm:git:https://github.com/idanudel/openhab-honeywellhome.git</connection>
+    <developerConnection>scm:git:https://github.com/idanudel/openhab-honeywellhome.git</developerConnection>
+  </scm>
+
 
   <artifactId>org.openhab.binding.honeywellhome</artifactId>
 
@@ -31,22 +37,6 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>openhab-release</id>
-      <url>https://openhab.jfrog.io/artifactory/libs-release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>openhab-snapshot</id>
-      <url>https://openhab.jfrog.io/artifactory/libs-snapshot</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <build>
     <plugins>
@@ -67,8 +57,23 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.1</version>
+      </plugin>
     </plugins>
   </build>
+
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/idanudel/openhab-honeywellhome</url>
+    </repository>
+  </distributionManagement>
+
 
   <profiles>
     <profile>
@@ -78,15 +83,6 @@
       </activation>
       <build>
         <plugins>
-<!--          <plugin>-->
-<!--            <groupId>org.openhab.tools.sat</groupId>-->
-<!--            <artifactId>sat-plugin</artifactId>-->
-<!--            <configuration>-->
-<!--              <checkstyleProperties>tools/static-code-analysis/checkstyle/ruleset.properties</checkstyleProperties>-->
-<!--              <checkstyleFilter>tools/static-code-analysis/checkstyle/suppressions.xml</checkstyleFilter>-->
-<!--              <spotbugsExclude>tools/static-code-analysis/spotbugs/suppressions.xml</spotbugsExclude>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
           <plugin>
             <groupId>org.commonjava.maven.plugins</groupId>
             <artifactId>directory-maven-plugin</artifactId>
