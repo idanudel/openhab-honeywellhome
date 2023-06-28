@@ -18,7 +18,8 @@ Coming Soon
 1. Creating Honeywell developer account
 2. Create openhab Honeywell app in your Honeywell developer account
 3. Bind your openhab Honeywell app to your Honeywell thermostats account
-4. Create openhab Thing
+4. Get Access Token
+5. Create openhab Thing
 
 ### 1. Creating Honeywell developer account:
 Create Honeywell developer account via https://developer.honeywellhome.com/
@@ -43,8 +44,35 @@ After hitting the URL above with your URL parameters you will start your Auth 2 
 ![step_3](.github/images/step_3_2.png?raw=true)
 ![step_3](.github/images/step_3_3.png?raw=true)
 
+Next, you will be forwarded to your callback URL, in the URL you will notice "code" query parameters, copy this value - we will need it for step number 4.
+in the following example, our code is "EtggGS9x": 
+https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=
 
-### 4. Create openhab Thing:
+### 4. Get Access Token:
+In order to get the Access Token, you will need to do a POST request to ```https://api.honeywell.com/oauth2/token```
+with your code from step number 3 and your `Consumer Key`, `Consumer Secret`, and `call back url` from your openhab App 
+
+you will need to create a basic auth token with your `Consumer Key` and `Consumer Secret, you can use [this]([https://developer.honeywellhome.com/api-methods](https://mixedanalytics.com/tools/basic-authentication-generator/)) for that (`Consumer Key`:`Consumer Secret`),
+and add to the following parameters as ``` application/x-www-form-urlencoded``` 
+grant_type = authorization_code
+code = {the code you got from step number 3}
+redirect_uri = {your app redirect_uri} (don't know y they need it)
+
+so it will look like curl:
+
+```
+curl --location 'https://api.honeywell.com/oauth2/token' \
+--header 'Authorization: Basic {YOUR_BASIC_AUTH TOKEN}' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'code={YOUR_CODE_FROM_STEP_3}' \
+--data-urlencode 'redirect_uri={YOUR_REDIRECT_URL}'
+```
+
+as a response, you finely get your `access_token` and `refresh_token`. keep them - you will need them in step number 5.
+
+### 5. Create Openhab Thing:
 
 
 
