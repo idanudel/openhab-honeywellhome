@@ -28,7 +28,20 @@ Create Honeywell developer account via https://developer.honeywellhome.com/
 * callback url is not really matter for this add beta version
 
 ### 3. Bind your Openhab Honeywell app to your Honeywell thermostats account:
+
+Open your browser with this URL
+
+```https://api.honeywell.com/oauth2/authorize?response_type=code&redirect_uri={your Honeywell openhab app Callback URL }&client_id={your Honeywell openhab app client_id}```
+
+* your “Honeywell openhab app Callback URL” & your “Honeywell openhab app client_id” can be found in your developer account under “My APPS” (client_id = Consumer Key)
+
+
 ![step_3](.github/images/step_3.png?raw=true)
+
+After hitting the URL above with your URL parameters you will start your Auth 2 process, meaning Honeywell will ask to give permissions to your new Openhab app you just created, so you will need to log in to your Honeywell client account (same user password you login with your mobile app to control your thermostat) and allow your Honeywell openhab app permissions.
+
+![step_3](.github/images/step_3_2.png?raw=true)
+![step_3](.github/images/step_3_3.png?raw=true)
 
 
 ### 4. Create openhab Thing:
