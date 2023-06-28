@@ -73,7 +73,11 @@ curl --location 'https://api.honeywell.com/oauth2/token' \
 as a response, you finely get your `access_token` and `refresh_token`. keep them - you will need them in step number 5.
 
 ### 5. Create Openhab Thing:
-
+After installing the addon SNAPSHOT you will create `Honeywell Home Account Binding Thing` and insert your
+1. Consumer Key
+2. Consumer Secret
+3. Token - from step number 4
+4. Refresh Token - from step number 4
 
 
 
