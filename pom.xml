@@ -17,11 +17,11 @@
     <connection>scm:git:${project.scm.url}</connection>
     <developerConnection>scm:git:${project.scm.url}</developerConnection>
     <url>https://github.com/idanudel/openhab-honeywellhome.git</url>
-    <tag>HEAD</tag>
+    <tag>v3.4.8</tag>
   </scm>
 
   <artifactId>org.openhab.binding.honeywellhome</artifactId>
-  <version>3.4.8-SNAPSHOT</version>
+  <version>3.4.8</version>
 
   <name>openHAB Add-ons :: Bundles :: HoneywellHome Binding</name>
 
