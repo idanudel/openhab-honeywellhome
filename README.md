@@ -44,7 +44,7 @@ After hitting the URL above with your URL parameters you will start your Auth 2 
 ![step_3](.github/images/step_3_2.png?raw=true)
 ![step_3](.github/images/step_3_3.png?raw=true)
 
-Next, you will be forwarded to your callback URL, in the URL you will notice "code" query parameters, copy this value - we will need it for step number 4.
+Next, you will be forwarded to your callback URL, in the URL you will notice "code" query parameter, copy this value - we will need it for step number 4.
 in the following example, our code is "EtggGS9x": 
 https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=
 
