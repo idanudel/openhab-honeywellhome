@@ -91,10 +91,22 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
-            <version>2.5.3</version>
+            <version>2.5.2</version>
             <configuration>
               <tagNameFormat>v@{project.version}</tagNameFormat>
               <autoVersionSubmodules>true</autoVersionSubmodules>
+              <releaseProfiles>release</releaseProfiles>
+              <goals>deploy</goals>
+              <scmCommentPrefix>bugid:0000
+                CR by:ci_user
+                TR by:ci_user
+                #TESTS:0
+                making a release NOMERGE
+              </scmCommentPrefix>
+              <autoVersionSubmodules>true</autoVersionSubmodules>
+              <!-- For the release:prepare run only clean and compile -->
+              <preparationGoals>clean compile</preparationGoals>
+              <javaHome>${env.JAVA_HOME}</javaHome>
             </configuration>
           </plugin>
         </plugins>
