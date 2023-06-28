@@ -23,12 +23,12 @@ Coming Soon
 ### 1. Creating Honeywell developer account:
 Create Honeywell developer account via https://developer.honeywellhome.com/
 ### 2. Create openhab Honeywell app in your Honeywell developer account:
-![alt text](.github/images/step_2.png?raw=true)
+![step_2](.github/images/step_2.png?raw=true)
 
 * callback url is not really matter for this add beta version
 
 ### 3. Bind your Openhab Honeywell app to your Honeywell thermostats account:
-
+![step_3](.github/images/step_3.png?raw=true)
 
 
 ### 4. Create openhab Thing:
