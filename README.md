@@ -74,11 +74,15 @@ as a response, you finely get your `access_token` and `refresh_token`. keep them
 
 ### 5. Create Openhab Thing:
 After installing the addon SNAPSHOT you will create `Honeywell Home Account Binding Thing` and insert your
-1. Consumer Key
-2. Consumer Secret
+1. Consumer Key - from step number 3
+2. Consumer Secret - from step number 3
 3. Token - from step number 4
 4. Refresh Token - from step number 4
+and Hit create Thing
+![step_5](.github/images/step_3_3.png?raw=true)
 
+Then go back to `HoneywellHome Binding` again and hit scan
+![step_5_2](.github/images/step_3_3.png?raw=true)
 
 
 ## Thing Configuration
