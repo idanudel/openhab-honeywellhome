@@ -79,10 +79,10 @@ After installing the addon SNAPSHOT you will create `Honeywell Home Account Bind
 3. Token - from step number 4
 4. Refresh Token - from step number 4
 and Hit create Thing
-![step_5](.github/images/step_3_3.png?raw=true)
+![step_5](.github/images/step_5.png?raw=true)
 
 Then go back to `HoneywellHome Binding` again and hit scan
-![step_5_2](.github/images/step_3_3.png?raw=true)
+![step_5_2](.github/images/step_5_2.png?raw=true)
 
 
 ## Thing Configuration
