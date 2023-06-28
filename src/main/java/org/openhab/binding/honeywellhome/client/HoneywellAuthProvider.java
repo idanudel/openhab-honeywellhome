@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HoneywellAuthProvider {
-    private final Logger logger = LoggerFactory.getLogger(HoneywellClient.class);
+    private final Logger logger = LoggerFactory.getLogger(HoneywellAuthProvider.class);
 
     HttpClient httpClient;
     String consumerKey;
