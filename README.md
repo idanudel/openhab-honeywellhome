@@ -11,6 +11,12 @@ _Since the binding uses a polling mechanism, there may be some latency depending
 ***
 Binding Jar available [Here](https://github.com/idanudel/openhab-honeywellhome/releases/tag/3.4.9)
 ***
+## Honeywell Home Api Rate limiter
+Seems like HoneywellHome Api allow 300 requests per hour per "openhab app" - more than that will start get a 429 response,
+that means if you have two thermostats you will need to change your refresh interval to 30 sec.
+(if you will create different "openhab app" per thermostat you can put it back to 15 sec).
+* This part is still in progress 
+* The behavior I see it not align with the [HoneywellHome Rate Limiter Document](https://developer.honeywellhome.com/faqs/what-rate-limit-api)
 
 ## Supported Things
 Coming Soon...
