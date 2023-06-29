@@ -4,15 +4,17 @@ _This binding is used to connect your HoneywellHome (only T5/T6 thermostat for n
 
 _The binding supports discovery via configuring your HoneywellHome dev App (describe down below)._ 
 
-_From the binding, you will get status of your thermostat and also a command channel where you can control the thermostat._ 
+_From the binding, you will get status of your thermostat and also a command channel where you can control the thermostat (very basic in this point)._ 
 
-_Since the binding uses a polling mechanism, there may be some latency depending on your setting regarding refresh time_
+_Since the binding uses a polling mechanism, there may be some latency depending on your setting regarding refresh time (15 sec is the minimum, less than that will cause 429 rate limiter errors from HoneywellHome servers)_
+
+***
 
 ## Supported Things
-Coming Soon
+Coming Soon...
 
 ## Discovery
-Coming Soon
+Coming Soon...
 
 ## Binding Configuration
 1. Creating Honeywell developer account
@@ -73,46 +75,43 @@ curl --location 'https://api.honeywell.com/oauth2/token' \
 as a response, you finely get your `access_token` and `refresh_token`. keep them - you will need them in step number 5.
 
 ### 5. Create Openhab Thing:
-After installing the addon SNAPSHOT you will create `Honeywell Home Account Binding Thing` and insert your
+After installing the addon you will create `Honeywell Home Account Binding Thing` and insert your
 1. Consumer Key - from step number 3
 2. Consumer Secret - from step number 3
 3. Token - from step number 4
 4. Refresh Token - from step number 4
+
 and Hit create Thing
 ![step_5](.github/images/step_5.png?raw=true)
 
 Then go back to `HoneywellHome Binding` again and hit scan
 ![step_5_2](.github/images/step_5_2.png?raw=true)
 
+then you should see your thermostats.
 
-## Thing Configuration
-Coming Soon
-
-### `sample` Thing Configuration
-Coming Soon
+Clicking on one of them will create honeywellhome thermostat thing
+![step_5_3](.github/images/step_5_3.png?raw=true)
 
 ## Channels
 Coming Soon
 
 ## Full Example
-Coming Soon
-### Thing Configuration
-
-```java
-Coming Soon
+Items:
 ```
-### Item Configuration
-
-```java
-Coming Soon
+Number CoolSetPoint "Cool SetPoint" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:coolSetPoint"}
+Number HeatSetpoint "Heat Set Point" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:heatSetpoint"}
+String ThermostatSetpointStatus "Thermostat Set Point Status" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:thermostatSetpointStatus"}
+String HeatCoolMode "Heat Cool Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:heatCoolMode"}
+String Mode "Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:mode"}
 ```
-
-### Sitemap Configuration
-
-```perl
-Coming Soon
+Sitemap:
 ```
+Frame label="Thermostat"{
+    Setpoint item=HeatSetpoint icon="temperature" label="heatSetpoint [%.1f °F]" minValue=82 maxValue=100 step=1
+    Setpoint item=CoolSetPoint icon="temperature" label="coolSetPoint [%.1f °F]" minValue=68 maxValue=82 step=1
+    Text item=ThermostatSetpointStatus icon="temperature" label="heatSetpoint"
+    Text item=HeatCoolMode icon="temperature" label="heatCoolMode"
+    Selection item=Mode label="Mode" mappings=[Off="Off", Cool="Cool", Heat="Heat"]
+}
 
-## Any custom content here!
-
-Coming Soon
+```
