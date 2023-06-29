@@ -9,6 +9,8 @@ _From the binding, you will get status of your thermostat and also a command cha
 _Since the binding uses a polling mechanism, there may be some latency depending on your setting regarding refresh time (15 sec is the minimum, less than that will cause 429 rate limiter errors from HoneywellHome servers)_
 
 ***
+Binding Jar available [Here](https://github.com/idanudel/openhab-honeywellhome/releases/tag/3.4.9)
+***
 
 ## Supported Things
 Coming Soon...
