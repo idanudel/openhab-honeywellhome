@@ -145,10 +145,7 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
                     if(getThermostatsStatusResponse.settings != null &&
                        getThermostatsStatusResponse.settings.fan != null &&
                        getThermostatsStatusResponse.settings.fan.changeableValues != null) {
-                        logger.info("Got Fan Status: {} ", getThermostatsStatusResponse.settings.fan.changeableValues.mode);//todo remove
                          updateState(FAN_STATUS, new StringType(getThermostatsStatusResponse.settings.fan.changeableValues.mode));
-                    } else {
-                        logger.info("Didn't get Fan Status");
                     }
                 }
             }
