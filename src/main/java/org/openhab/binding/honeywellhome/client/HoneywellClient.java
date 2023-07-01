@@ -125,36 +125,6 @@ public class HoneywellClient {
         return false;
     }
 
-    public GetThermostatsFanStatusResponse getThermostatsFanStatus (String thermostatId, String locationId) {
-        return getThermostatsFanStatus(thermostatId, locationId, false);
-    }
-
-    private GetThermostatsFanStatusResponse getThermostatsFanStatus (String thermostatId, String locationId, boolean isRetry) {
-        try {
-            String accessToken = this.honeywellAuthProvider.getHoneywellCredentials().accessToken;
-            String url = String.format(HONEYWELL_GET_THERMOSTAT_FAN_STATUS, thermostatId, this.honeywellAuthProvider.consumerKey, locationId);
-            ContentResponse contentResponse = this.httpClient.newRequest(url)
-                    .method(HttpMethod.GET).header("Authorization", "Bearer " + accessToken)
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .send();
-            if(contentResponse.getStatus() == 200) {
-                String contentAsString = contentResponse.getContentAsString();
-                logger.debug("Got device fan status by id: {} location id: {} with response: {}", thermostatId, locationId, contentAsString);
-                return gson.fromJson(contentAsString, GetThermostatsFanStatusResponse.class);
-            }
-            if(contentResponse.getStatus() == 401 && isRetry == false) {
-                this.honeywellAuthProvider.refreshToken();
-                return getThermostatsFanStatus(thermostatId, locationId, true);
-            }
-            else {
-                logger.error("Got error response: {} while trying to get Honeywell Fan Status for Thermostats Device id: {} in location: {}", contentResponse.getStatus(), thermostatId, locationId);
-            }
-        } catch (Exception e) {
-            logger.error("Got error while trying to get Thermostats Fan Status Device id: {} in location: {}",thermostatId,  locationId, e);
-        }
-        return null;
-    }
-
     public boolean changeThermostatsFanSetting (String thermostatId, String locationId, String mode) {
         return changeThermostatsFanSetting(thermostatId, locationId, mode, false);
     }
