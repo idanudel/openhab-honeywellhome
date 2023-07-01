@@ -111,6 +111,7 @@ Number HeatSetpoint "Heat Set Point" {channel="honeywellhome:thermostat:9bf4a5d4
 String ThermostatSetpointStatus "Thermostat Set Point Status" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:thermostatSetpointStatus"}
 String HeatCoolMode "Heat Cool Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:heatCoolMode"}
 String Mode "Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:mode"}
+String FanStatus "FanStatus" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:fanStatus"}
 ```
 Sitemap:
 ```
@@ -120,6 +121,7 @@ Frame label="Thermostat"{
     Text item=ThermostatSetpointStatus icon="temperature" label="heatSetpoint"
     Text item=HeatCoolMode icon="temperature" label="heatCoolMode"
     Selection item=Mode label="Mode" mappings=[Off="Off", Cool="Cool", Heat="Heat"]
+    Selection item=FanStatus label="Fan Status" mappings=[On="On", Auto="Auto", Circulate="Circulate"]
 }
 
 ```

@@ -9,6 +9,7 @@ import org.eclipse.jetty.http.HttpMethod;
 import org.openhab.binding.honeywellhome.client.api.pojo.ChangeableValues;
 import org.openhab.binding.honeywellhome.client.api.request.ChangeThermostatsSettingRequest;
 import org.openhab.binding.honeywellhome.client.api.response.GetAllLocationsResponse;
+import org.openhab.binding.honeywellhome.client.api.response.GetThermostatsFanStatusResponse;
 import org.openhab.binding.honeywellhome.client.api.response.GetThermostatsStatusResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,6 +121,68 @@ public class HoneywellClient {
             }
         } catch (Exception e) {
             logger.error("Got error while trying to Change Honeywell Thermostats DeviceId: {} locationId: {}", thermostatId, locationId, e);
+        }
+        return false;
+    }
+
+    public GetThermostatsFanStatusResponse getThermostatsFanStatus (String thermostatId, String locationId) {
+        return getThermostatsFanStatus(thermostatId, locationId, false);
+    }
+
+    private GetThermostatsFanStatusResponse getThermostatsFanStatus (String thermostatId, String locationId, boolean isRetry) {
+        try {
+            String accessToken = this.honeywellAuthProvider.getHoneywellCredentials().accessToken;
+            String url = String.format(HONEYWELL_GET_THERMOSTAT_FAN_STATUS, thermostatId, this.honeywellAuthProvider.consumerKey, locationId);
+            ContentResponse contentResponse = this.httpClient.newRequest(url)
+                    .method(HttpMethod.GET).header("Authorization", "Bearer " + accessToken)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .send();
+            if(contentResponse.getStatus() == 200) {
+                String contentAsString = contentResponse.getContentAsString();
+                logger.debug("Got device fan status by id: {} location id: {} with response: {}", thermostatId, locationId, contentAsString);
+                return gson.fromJson(contentAsString, GetThermostatsFanStatusResponse.class);
+            }
+            if(contentResponse.getStatus() == 401 && isRetry == false) {
+                this.honeywellAuthProvider.refreshToken();
+                return getThermostatsFanStatus(thermostatId, locationId, true);
+            }
+            else {
+                logger.error("Got error response: {} while trying to get Honeywell Fan Status for Thermostats Device id: {} in location: {}", contentResponse.getStatus(), thermostatId, locationId);
+            }
+        } catch (Exception e) {
+            logger.error("Got error while trying to get Thermostats Fan Status Device id: {} in location: {}",thermostatId,  locationId, e);
+        }
+        return null;
+    }
+
+    public boolean changeThermostatsFanSetting (String thermostatId, String locationId, String mode) {
+        return changeThermostatsFanSetting(thermostatId, locationId, mode, false);
+    }
+
+    private boolean changeThermostatsFanSetting (String thermostatId, String locationId, String mode, boolean isRetry) {
+        try {
+            String accessToken = this.honeywellAuthProvider.getHoneywellCredentials().accessToken;
+            String url = String.format(HONEYWELL_POST_THERMOSTAT_FAN_STATUS, thermostatId, this.honeywellAuthProvider.consumerKey, locationId);
+            StringContentProvider contentProvider = new StringContentProvider(gson.toJson(new GetThermostatsFanStatusResponse(mode)));
+            ContentResponse contentResponse = this.httpClient.newRequest(url)
+                    .method(HttpMethod.POST)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Content-Type", "application/json")
+                    .content(contentProvider)
+                    .send();
+            if(contentResponse.getStatus() == 200) {
+                logger.debug("Change Thermostats Fan Setting by id: {} location id: {} with response: {}", thermostatId, locationId, 200);
+                return true;
+            }
+            if(contentResponse.getStatus() == 401 && isRetry == false) {
+                this.honeywellAuthProvider.refreshToken();
+                return changeThermostatsFanSetting(thermostatId, locationId, mode, true);
+            }
+            else {
+                logger.error("Got error response: {} while trying to Change Thermostats Fan Setting by Device id: {} in location: {}", contentResponse.getStatus(), thermostatId, locationId);
+            }
+        } catch (Exception e) {
+            logger.error("Got error while trying to Change Thermostats Fan Setting by DeviceId: {} locationId: {}", thermostatId, locationId, e);
         }
         return false;
     }

@@ -85,6 +85,9 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
             this.changeableValuesState.mode = command.toString();
             this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
         }
+        if (FAN_STATUS.equals(channelUID.getId())) {
+            this.getHoneywellClient().changeThermostatsFanSetting(deviceId, locationId, command.toString());
+        }
 
     }
 
@@ -139,6 +142,14 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
                     updateState(THERMOSTAT_SET_POINT_STATUS, new StringType(getThermostatsStatusResponse.changeableValues.thermostatSetpointStatus));
                     updateState(HEAT_COOL_MODE, new StringType(getThermostatsStatusResponse.changeableValues.heatCoolMode));
                     updateState(MODE, new StringType(getThermostatsStatusResponse.changeableValues.mode));
+                    if(getThermostatsStatusResponse.settings != null &&
+                       getThermostatsStatusResponse.settings.fan != null &&
+                       getThermostatsStatusResponse.settings.fan.changeableValues != null) {
+                        logger.info("Got Fan Status: {} ", getThermostatsStatusResponse.settings.fan.changeableValues.mode);//todo remove
+                         updateState(FAN_STATUS, new StringType(getThermostatsStatusResponse.settings.fan.changeableValues.mode));
+                    } else {
+                        logger.info("Didn't get Fan Status");
+                    }
                 }
             }
         } catch (Exception e) {

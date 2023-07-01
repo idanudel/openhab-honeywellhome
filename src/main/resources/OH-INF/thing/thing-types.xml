@@ -42,6 +42,7 @@
 			<channel id="thermostatSetpointStatus" typeId="thermostatSetpointStatus"/>
 			<channel id="heatCoolMode" typeId="heatCoolMode"/>
 			<channel id="mode" typeId="mode"/>
+			<channel id="fanStatus" typeId="fanStatus"/>
 		</channels>
 		<config-description>
 			<parameter name="locationId" type="text" required="true">
@@ -103,6 +104,18 @@
 				<option value="Off">Off</option>
 				<option value="Cool">Cool</option>
 				<option value="Heat">Heat</option>
+			</options>
+		</state>
+	</channel-type>
+	<channel-type id="fanStatus">
+		<item-type>String</item-type>
+		<label>Fan Status</label>
+		<description>Fan Status for Honeywell Home Thermostat Binding</description>
+		<state readOnly="false" pattern="%s">
+			<options>
+				<option value="On">On</option>
+				<option value="Auto">Auto</option>
+				<option value="Circulate">Circulate</option>
 			</options>
 		</state>
 	</channel-type>
