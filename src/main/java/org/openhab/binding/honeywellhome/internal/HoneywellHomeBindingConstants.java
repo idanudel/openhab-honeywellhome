@@ -40,4 +40,5 @@ public class HoneywellHomeBindingConstants {
     public static final String THERMOSTAT_SET_POINT_STATUS = "thermostatSetpointStatus";
     public static final String HEAT_COOL_MODE = "heatCoolMode";
     public static final String MODE = "mode";
+    public static final String FAN_STATUS = "fanStatus";
 }
