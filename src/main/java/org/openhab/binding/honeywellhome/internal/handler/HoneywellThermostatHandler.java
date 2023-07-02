@@ -142,12 +142,19 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
                     updateState(THERMOSTAT_SET_POINT_STATUS, new StringType(getThermostatsStatusResponse.changeableValues.thermostatSetpointStatus));
                     updateState(HEAT_COOL_MODE, new StringType(getThermostatsStatusResponse.changeableValues.heatCoolMode));
                     updateState(MODE, new StringType(getThermostatsStatusResponse.changeableValues.mode));
+                    updateState(DISPLAYED_OUT_DOOR_HUMIDITY, new DecimalType(getThermostatsStatusResponse.displayedOutdoorHumidity));
+                    updateState(USER_DEFINED_DEVICE_NAME, new StringType(getThermostatsStatusResponse.userDefinedDeviceName));
+                    updateState(NAME, new StringType(getThermostatsStatusResponse.name));
+                    updateState(IS_ALIVE, new StringType(getThermostatsStatusResponse.isAlive+""));
+                    updateState(UNITS, new StringType(getThermostatsStatusResponse.units));
+                    updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature));
+                    updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature));
                     if(getThermostatsStatusResponse.settings != null &&
                        getThermostatsStatusResponse.settings.fan != null &&
                        getThermostatsStatusResponse.settings.fan.changeableValues != null) {
                          updateState(FAN_STATUS, new StringType(getThermostatsStatusResponse.settings.fan.changeableValues.mode));
                     }
-                }
+}
             }
         } catch (Exception e) {
             updateStatus(ThingStatus.OFFLINE);
