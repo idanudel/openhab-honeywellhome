@@ -51,7 +51,7 @@ public class HoneywellClient {
                 logger.debug("Got AllLocations by consumer id: {} response: {}", getConsumeId(), contentAsString);
                 return gson.fromJson(contentResponse.getContentAsString(), new TypeToken<ArrayList<GetAllLocationsResponse>>() {}.getType());
             }
-            if(contentResponse.getStatus() == 401 && isRetry == false) {
+            if(isRefreshTokenNeeded(contentResponse.getStatus()) && isRetry == false) {
                 this.honeywellAuthProvider.refreshToken();
                 return getAllLocations(true);
             }
@@ -80,7 +80,7 @@ public class HoneywellClient {
                 logger.debug("Got device by id: {} location id: {} with response: {}", thermostatId, locationId, contentAsString);
                 return gson.fromJson(contentAsString, GetThermostatsStatusResponse.class);
             }
-            if(contentResponse.getStatus() == 401 && isRetry == false) {
+            if(isRefreshTokenNeeded(contentResponse.getStatus()) && isRetry == false) {
                 this.honeywellAuthProvider.refreshToken();
                 return getThermostatsDevice(thermostatId, locationId, true);
             }
@@ -112,7 +112,7 @@ public class HoneywellClient {
                 logger.debug("Change Thermostats Setting by id: {} location id: {} with response: {}", thermostatId, locationId, 200);
                 return true;
             }
-            if(contentResponse.getStatus() == 401 && isRetry == false) {
+            if(isRefreshTokenNeeded(contentResponse.getStatus()) && isRetry == false) {
                 this.honeywellAuthProvider.refreshToken();
                 return changeThermostatsSetting(thermostatId, locationId, changeableValues, true);
             }
@@ -144,7 +144,7 @@ public class HoneywellClient {
                 logger.debug("Change Thermostats Fan Setting by id: {} location id: {} with response: {}", thermostatId, locationId, 200);
                 return true;
             }
-            if(contentResponse.getStatus() == 401 && isRetry == false) {
+            if(isRefreshTokenNeeded(contentResponse.getStatus()) && isRetry == false) {
                 this.honeywellAuthProvider.refreshToken();
                 return changeThermostatsFanSetting(thermostatId, locationId, mode, true);
             }
@@ -159,5 +159,9 @@ public class HoneywellClient {
 
     public String getConsumeId () {
         return this.honeywellAuthProvider != null ? this.honeywellAuthProvider.consumerKey : null;
+    }
+
+    private boolean isRefreshTokenNeeded(int status) {
+        return status == 401;
     }
 }

@@ -43,6 +43,13 @@
 			<channel id="heatCoolMode" typeId="heatCoolMode"/>
 			<channel id="mode" typeId="mode"/>
 			<channel id="fanStatus" typeId="fanStatus"/>
+			<channel id="displayedOutdoorHumidity" typeId="displayedOutdoorHumidity"/>
+			<channel id="userDefinedDeviceName" typeId="userDefinedDeviceName"/>
+			<channel id="name" typeId="name"/>
+			<channel id="isAlive" typeId="isAlive"/>
+			<channel id="units" typeId="units"/>
+			<channel id="indoorTemperature" typeId="indoorTemperature"/>
+			<channel id="outdoorTemperature" typeId="outdoorTemperature"/>
 		</channels>
 		<config-description>
 			<parameter name="locationId" type="text" required="true">
@@ -118,6 +125,41 @@
 				<option value="Circulate">Circulate</option>
 			</options>
 		</state>
+	</channel-type>
+	<channel-type id="displayedOutdoorHumidity">
+		<item-type>Number:Humidity</item-type>
+		<label>Displayed Outdoor Humidity</label>
+		<description>Displayed Outdoor Humidity for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="userDefinedDeviceName">
+		<item-type>String</item-type>
+		<label>User Defined Device Name</label>
+		<description>User Defined Device Name for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="name">
+		<item-type>String</item-type>
+		<label>Name</label>
+		<description>Name for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="isAlive">
+		<item-type>String</item-type>
+		<label>Is Alive</label>
+		<description>Is Alive for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="units">
+		<item-type>String</item-type>
+		<label>Temperature Units</label>
+		<description>Temperature Units for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="indoorTemperature">
+		<item-type>Number:Temperature</item-type>
+		<label>Indoor Temperature</label>
+		<description>Indoor Temperature Set Point for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="outdoorTemperature">
+		<item-type>Number:Temperature</item-type>
+		<label>Outdoor Temperature Temperature</label>
+		<description>Outdoor Temperature Set Point for Honeywell Home Thermostat Binding</description>
 	</channel-type>
 
 

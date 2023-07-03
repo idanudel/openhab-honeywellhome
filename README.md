@@ -112,6 +112,13 @@ String ThermostatSetpointStatus "Thermostat Set Point Status" {channel="honeywel
 String HeatCoolMode "Heat Cool Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:heatCoolMode"}
 String Mode "Mode" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:mode"}
 String FanStatus "FanStatus" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:fanStatus"}
+Number DisplayedOutdoorHumidity "Displayed Outdoor Humidity" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:displayedOutdoorHumidity"}
+String UserDefinedDeviceName "User Defined Device Name" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:userDefinedDeviceName"}
+String Name "Name" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:name"}
+String IsAlive "Is Alive" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:isAlive"}
+String Units "Units" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:units"}
+Number IndoorTemperature "Indoor Temperature" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:indoorTemperature"}
+Number OutdoorTemperature "Outdoor Temperature" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:outdoorTemperature"}
 ```
 Sitemap:
 ```
@@ -122,6 +129,13 @@ Frame label="Thermostat"{
     Text item=HeatCoolMode icon="temperature" label="heatCoolMode"
     Selection item=Mode label="Mode" mappings=[Off="Off", Cool="Cool", Heat="Heat"]
     Selection item=FanStatus label="Fan Status" mappings=[On="On", Auto="Auto", Circulate="Circulate"]
+    Text item=DisplayedOutdoorHumidity icon="temperature" label="Displayed Outdoor Humidity [%.1f]"
+    Text item=UserDefinedDeviceName label="User Defined Device Name"
+    Text item=Name label="Name"
+    Text item=IsAlive label="Is Alive"
+    Text item=Units label="Units"
+    Text item=IndoorTemperature icon="temperature" label="Indoor Temperature [%.1f °F]"
+    Text item=OutdoorTemperature icon="temperature" label="Outdoor Temperature [%.1f °F]"
 }
 
 ```
