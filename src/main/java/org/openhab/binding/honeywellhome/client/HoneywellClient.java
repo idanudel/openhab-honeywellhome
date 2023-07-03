@@ -162,10 +162,6 @@ public class HoneywellClient {
     }
 
     private boolean isRefreshTokenNeeded(int status) {
-        if(status == 429) {
-            logger.error("Got error response: {} while from honeywell.", status);
-        }
-
-        return status == 401 || status == 429;
+        return status == 401;
     }
 }
