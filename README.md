@@ -1,22 +1,22 @@
-# HoneywellHome Binding
+# HoneywellHome Binding for openHAB
 
 _This binding is used to connect your HoneywellHome (only T5/T6 thermostat for now) using official [HoneywellHome Api](https://developer.honeywellhome.com/api-methods)._ 
 
-_The binding supports discovery via configuring your HoneywellHome dev App (describe down below)._ 
+_The binding supports discovery via configuring your HoneywellHome dev App (described down below)._ 
 
-_From the binding, you will get status of your thermostat and also a command channel where you can control the thermostat (very basic in this point)._ 
+_From this binding, you will get the status of your thermostat and also a command channel where you can control the thermostat (very basic at this point)._ 
 
-_Since the binding uses a polling mechanism, there may be some latency depending on your setting regarding refresh time (15 sec is the minimum, less than that will cause 429 rate limiter errors from HoneywellHome servers)_
+_Since the binding uses a polling mechanism, there may be some latency depending on your setting regarding refresh time (15 sec is the minimum, less than that will cause [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) rate limiter errors from HoneywellHome servers)_
 
 ***
-Binding Jar available [Here](https://github.com/idanudel/openhab-honeywellhome/releases)
+Binding JAR available [here](https://github.com/idanudel/openhab-honeywellhome/releases)
 ***
-## Honeywell Home Api Rate limiter
-Seems like HoneywellHome Api allow 300 requests per hour per "openhab app" - more than that will start get a 429 response,
-that means if you have two thermostats you will need to change your refresh interval to 30 sec.
-(if you will create different "openhab app" per thermostat you can put it back to 15 sec).
+## Honeywell Home API Rate Limiter
+Seems like HoneywellHome API allows 300 requests per hour per "openHAB app". Additional requests will yield an HTTP 429 response,
+that means if you have two thermostats you will need to change your refresh interval to 30 seconds.
+(if you will create a different "openHAB app" per thermostat, the minimum interval can be set to 15 seconds).
 * This part is still in progress 
-* The behavior I see it not align with the [HoneywellHome Rate Limiter Document](https://developer.honeywellhome.com/faqs/what-rate-limit-api)
+* The behavior I see is not aligned with the [HoneywellHome Rate Limiter Document](https://developer.honeywellhome.com/faqs/what-rate-limit-api)
 
 ## Supported Things
 Coming Soon...
@@ -25,79 +25,80 @@ Coming Soon...
 Coming Soon...
 
 ## Binding Configuration
-1. Creating Honeywell developer account
-2. Create openhab Honeywell app in your Honeywell developer account
-3. Bind your openhab Honeywell app to your Honeywell thermostats account
+1. Creating a Honeywell developer account
+2. Create an openHAB Honeywell app in your Honeywell developer account
+3. Bind your openHAB Honeywell app to your Honeywell thermostats account
 4. Get Access Token
-5. Create openhab Thing
+5. Create openHAB Thing
 
-### 1. Creating Honeywell developer account:
-Create Honeywell developer account via https://developer.honeywellhome.com/
-### 2. Create openhab Honeywell app in your Honeywell developer account:
+### 1. Creating a Honeywell developer account:
+Create a Honeywell developer account via https://developer.honeywellhome.com/
+### 2. Create an openHAB Honeywell app in your Honeywell developer account:
 ![step_2](.github/images/step_2.png?raw=true)
 
-* callback url is not really matter for this beta version
+* A callback URL doesn't really matter for this beta version
 
-### 3. Bind your Openhab Honeywell app to your Honeywell thermostats account:
+### 3. Bind your openHAB Honeywell app to your Honeywell thermostats account:
 
-Open your browser with this URL
+Open your browser with this URL (replace placeholders first):
 
-```https://api.honeywell.com/oauth2/authorize?response_type=code&redirect_uri={your Honeywell openhab app Callback URL }&client_id={your Honeywell openhab app client_id}```
+`https://api.honeywell.com/oauth2/authorize?response_type=code&redirect_uri={your Honeywell openHAB app Callback URL}&client_id={your Honeywell openHAB app client_id}`
 
-* your “Honeywell openhab app Callback URL” & your “Honeywell openhab app client_id” can be found in your developer account under “My APPS” (client_id = Consumer Key)
+* Your “Honeywell openHAB app Callback URL” & your “Honeywell openHAB app client_id” can be found in your developer account under “My APPS” (client_id = Consumer Key)
 
 
 ![step_3](.github/images/step_3.png?raw=true)
 
-After hitting the URL above with your URL parameters you will start your Auth 2 process, meaning Honeywell will ask to give permissions to your new Openhab app you just created, so you will need to log in to your Honeywell client account (same user password you login with your mobile app to control your thermostat) and allow your Honeywell openhab app permissions.
+After hitting the URL above with your URL parameters you will start your OAuth2 process, meaning Honeywell will ask you to give permissions to your new openHAB app you just created, so you will need to log in to your Honeywell client account (same username and password you used to login with your mobile app to control your thermostat) and allow your Honeywell openHAB app permissions.
 
 ![step_3](.github/images/step_3_2.png?raw=true)
 ![step_3](.github/images/step_3_3.png?raw=true)
 
-Next, you will be forwarded to your callback URL, in the URL you will notice "code" query parameter, copy this value - we will need it for step number 4.
-in the following example, our code is "EtggGS9x": 
-https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=
+Next, you will be forwarded to your callback URL. In the URL you will notice a `code` query parameter, copy this value - we will need it for step number 4.
+In the following example, our code is `EtggGS9x`: 
+`https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=`
 
 ### 4. Get Access Token:
-In order to get the Access Token, you will need to do a POST request to ```https://api.honeywell.com/oauth2/token```
-with your code from step number 3 and your `Consumer Key`, `Consumer Secret`, and `call back url` from your openhab App 
+In order to get the Access Token, you will need to do a POST request to `https://api.honeywell.com/oauth2/token`
+with your code from step number 3 and your `Consumer Key`, `Consumer Secret`, and `callback URL` from your openHAB App 
 
-you will need to create a basic auth token with your `Consumer Key` and `Consumer Secret, you can use [this]([https://developer.honeywellhome.com/api-methods](https://mixedanalytics.com/tools/basic-authentication-generator/)) for that (`Consumer Key`:`Consumer Secret`),
-and add to the following parameters as ``` application/x-www-form-urlencoded``` 
-grant_type = authorization_code
-code = {the code you got from step number 3}
-redirect_uri = {your app redirect_uri} (don't know y they need it)
+You will need to create a basic auth token with your `Consumer Key` and `Consumer Secret`.
+You can use [this](https://developer.honeywellhome.com/api-methods) and [this](https://mixedanalytics.com/tools/basic-authentication-generator/)
+for that (`Consumer Key`:`Consumer Secret`), and add to the following parameters as `application/x-www-form-urlencoded`.
+  - grant_type = authorization_code
+  - code = {the code you got from step number 3}
+  - redirect_uri = {your app redirect_uri}
 
-so it will look like curl:
+This is an example request using `curl`:
 
-```
+```shell
 curl --location 'https://api.honeywell.com/oauth2/token' \
---header 'Authorization: Basic {YOUR_BASIC_AUTH TOKEN}' \
---header 'Accept: application/json' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'grant_type=authorization_code' \
---data-urlencode 'code={YOUR_CODE_FROM_STEP_3}' \
---data-urlencode 'redirect_uri={YOUR_REDIRECT_URL}'
+     --header 'Authorization: Basic {YOUR_BASIC_AUTH TOKEN}' \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/x-www-form-urlencoded' \
+     --data-urlencode 'grant_type=authorization_code' \
+     --data-urlencode 'code={YOUR_CODE_FROM_STEP_3}' \
+     --data-urlencode 'redirect_uri={YOUR_REDIRECT_URL}'
 ```
 
-as a response, you finely get your `access_token` and `refresh_token`. keep them - you will need them in step number 5.
+as a response, you finally get your `access_token` and `refresh_token`. Keep them - you will need them in step 5.
 
-### 5. Create Openhab Thing:
-After installing the addon you will create `Honeywell Home Account Binding Thing` and insert your
+### 5. Create openHAB Thing:
+After installing the addon you will create a `Honeywell Home Account Binding Thing` and insert your
 1. Consumer Key - from step number 3
 2. Consumer Secret - from step number 3
 3. Token - from step number 4
 4. Refresh Token - from step number 4
 
-and Hit create Thing
+and click **Create Thing**
 ![step_5](.github/images/step_5.png?raw=true)
 
-Then go back to `HoneywellHome Binding` again and hit scan
+Then go back to `HoneywellHome Binding` again and click Scan
 ![step_5_2](.github/images/step_5_2.png?raw=true)
 
 then you should see your thermostats.
 
-Clicking on one of them will create honeywellhome thermostat thing
+Clicking on one of them will create HoneywellHome thermostat thing
 ![step_5_3](.github/images/step_5_3.png?raw=true)
 
 ## Channels
@@ -120,6 +121,7 @@ String Units "Units" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE
 Number IndoorTemperature "Indoor Temperature" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:indoorTemperature"}
 Number OutdoorTemperature "Outdoor Temperature" {channel="honeywellhome:thermostat:9bf4a5d4fa:LCC-B82CA02CE73E:outdoorTemperature"}
 ```
+
 Sitemap:
 ```
 Frame label="Thermostat"{
@@ -137,5 +139,4 @@ Frame label="Thermostat"{
     Text item=IndoorTemperature icon="temperature" label="Indoor Temperature [%.1f °F]"
     Text item=OutdoorTemperature icon="temperature" label="Outdoor Temperature [%.1f °F]"
 }
-
 ```
