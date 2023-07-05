@@ -139,3 +139,7 @@ Frame label="Thermostat"{
 }
 
 ```
+## Comming soon:
+1. Adding last update time
+2. Adding internal isAlive status
+3. Improving API integration to avoid HoneywellHome rate limiter issue
