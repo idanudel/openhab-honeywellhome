@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Device {
-    public int displayedOutdoorHumidity;
+    public long displayedOutdoorHumidity;
     public VacationHold vacationHold;
     public CurrentSchedulePeriod currentSchedulePeriod;
     public ScheduleCapabilities scheduleCapabilities;
@@ -30,7 +30,7 @@ public class Device {
     public String dataSyncStatus;
     public String deviceSerialNo;
     public String units;
-    public int indoorTemperature;
+    public double indoorTemperature;
     public double outdoorTemperature;
     public ArrayList<String> allowedModes;
     public int deadband;
