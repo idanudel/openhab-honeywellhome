@@ -5,8 +5,8 @@ import org.openhab.binding.honeywellhome.client.api.pojo.ChangeableValues;
 public class ChangeThermostatsSettingRequest {
 
     String mode;
-    int heatSetpoint;
-    int coolSetpoint;
+    long heatSetpoint;
+    long coolSetpoint;
     String thermostatSetpointStatus;
 
     public ChangeThermostatsSettingRequest(ChangeableValues changeableValues) {
