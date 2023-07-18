@@ -3,6 +3,7 @@
     <feature version="0.0.0">
         <feature>openhab-runtime-base</feature>
         <feature>wrap</feature>
+        <bundle>mvn:com.google.code.gson/gson/2.10.1</bundle>
         <bundle>mvn:org.openhab.addons.bundles/org.openhab.binding.honeywellhome/3.0.3-SNAPSHOT</bundle>
         <bundle>wrap:mvn:org.lastnpe.eea/eea-all/2.2.1</bundle>
     </feature>
