@@ -50,6 +50,8 @@
 			<channel id="units" typeId="units"/>
 			<channel id="indoorTemperature" typeId="indoorTemperature"/>
 			<channel id="outdoorTemperature" typeId="outdoorTemperature"/>
+			<channel id="currentScheduleDay" typeId="currentScheduleDay"/>
+			<channel id="currentSchedulePeriod" typeId="currentSchedulePeriod"/>
 		</channels>
 		<config-description>
 			<parameter name="locationId" type="text" required="true">
@@ -160,6 +162,16 @@
 		<item-type>Number:Temperature</item-type>
 		<label>Outdoor Temperature Temperature</label>
 		<description>Outdoor Temperature Set Point for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="currentScheduleDay">
+		<item-type>String</item-type>
+		<label>Current Schedule Day</label>
+		<description>Current Schedule Day for Honeywell Home Thermostat Binding</description>
+	</channel-type>
+	<channel-type id="currentSchedulePeriod">
+		<item-type>String</item-type>
+		<label>Current Schedule Period</label>
+		<description>Current Schedule Period for Honeywell Home Thermostat Binding</description>
 	</channel-type>
 
 

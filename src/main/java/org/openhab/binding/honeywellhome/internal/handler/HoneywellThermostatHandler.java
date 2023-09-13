@@ -149,6 +149,10 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
                     updateState(UNITS, new StringType(getThermostatsStatusResponse.units));
                     updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature));
                     updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature));
+                    if(getThermostatsStatusResponse.currentSchedulePeriod!=null) {
+                        updateState(CURRENT_SCHEDULE_PERIOD, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.period));
+                        updateState(CURRENT_SCHEDULE_DAY, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.day));
+                    }
                     if(getThermostatsStatusResponse.settings != null &&
                        getThermostatsStatusResponse.settings.fan != null &&
                        getThermostatsStatusResponse.settings.fan.changeableValues != null) {
