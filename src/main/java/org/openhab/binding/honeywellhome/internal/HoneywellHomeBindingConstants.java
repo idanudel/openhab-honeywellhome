@@ -50,4 +50,6 @@ public class HoneywellHomeBindingConstants {
     public static final String UNITS = "units";
     public static final String INDOOR_TEMPERATURE = "indoorTemperature";
     public static final String OUTDOOR_TEMPERATURE = "outdoorTemperature";
+    public static final String CURRENT_SCHEDULE_DAY = "currentScheduleDay";
+    public static final String CURRENT_SCHEDULE_PERIOD = "currentSchedulePeriod";
 }
