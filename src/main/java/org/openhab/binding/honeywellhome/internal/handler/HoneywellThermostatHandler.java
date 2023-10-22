@@ -137,18 +137,18 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
                 if(getThermostatsStatusResponse!=null) {
                     updateStatus(ThingStatus.ONLINE);
                     this.changeableValuesState = getThermostatsStatusResponse.changeableValues; // we need to store this data because in order to change one of the values we need to provide all of them;
-                    updateState(COOL_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.coolSetpoint));
-                    updateState(HEAT_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.heatSetpoint));
+                    updateState(COOL_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.coolSetpoint+""));
+                    updateState(HEAT_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.heatSetpoint+""));
                     updateState(THERMOSTAT_SET_POINT_STATUS, new StringType(getThermostatsStatusResponse.changeableValues.thermostatSetpointStatus));
                     updateState(HEAT_COOL_MODE, new StringType(getThermostatsStatusResponse.changeableValues.heatCoolMode));
                     updateState(MODE, new StringType(getThermostatsStatusResponse.changeableValues.mode));
-                    updateState(DISPLAYED_OUT_DOOR_HUMIDITY, new DecimalType(getThermostatsStatusResponse.displayedOutdoorHumidity));
+                    updateState(DISPLAYED_OUT_DOOR_HUMIDITY, new DecimalType(getThermostatsStatusResponse.displayedOutdoorHumidity+""));
                     updateState(USER_DEFINED_DEVICE_NAME, new StringType(getThermostatsStatusResponse.userDefinedDeviceName));
                     updateState(NAME, new StringType(getThermostatsStatusResponse.name));
                     updateState(IS_ALIVE, new StringType(getThermostatsStatusResponse.isAlive+""));
                     updateState(UNITS, new StringType(getThermostatsStatusResponse.units));
-                    updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature));
-                    updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature));
+                    updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature+""));
+                    updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature+""));
                     if(getThermostatsStatusResponse.currentSchedulePeriod!=null) {
                         updateState(CURRENT_SCHEDULE_PERIOD, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.period));
                         updateState(CURRENT_SCHEDULE_DAY, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.day));
