@@ -61,6 +61,7 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
     public void handleCommand(ChannelUID channelUID, Command command) {
         //todo put command on Q and fire them one after another to avoid data overwrite
         //todo make sure this handler is only for T5-T6 thermostat type
+        logger.debug("Starting Honeywell Thermostat handle Command: {}", command.toString());
         String locationId = config.locationId;
         String deviceId = config.deviceId;
         if (command instanceof RefreshType) {
