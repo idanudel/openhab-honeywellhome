@@ -68,13 +68,13 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
             startRefreshTask();
             return;
         }
-        if (command instanceof QuantityType) {
+        if (command instanceof DecimalType) {
             if (COOL_SET_POINT.equals(channelUID.getId())) {
-                this.changeableValuesState.coolSetpoint = ((QuantityType<?>) command).intValue();
+                this.changeableValuesState.coolSetpoint = ((DecimalType) command).intValue();
                 this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
             }
             if (HEAT_SET_POINT.equals(channelUID.getId())) {
-                this.changeableValuesState.heatSetpoint = ((QuantityType<?>) command).intValue();
+                this.changeableValuesState.heatSetpoint = ((DecimalType) command).intValue();
                 this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
             }
         }
