@@ -38,7 +38,25 @@ Create Honeywell developer account via https://developer.honeywellhome.com/
 
 * callback url is not really matter for this beta version
 
-### 3. Bind your Openhab Honeywell app to your Honeywell thermostats account:
+### 3. & 4. Get your Token and Refresh Token (fast path)
+
+Steps 3 and 4 below (authorize in a browser, copy a `code` out of the URL, hand-build a
+curl command with a Basic Auth header) are the most tedious/error-prone part of setup.
+`scripts/get_honeywell_token.py` automates all of it - it opens the authorize URL for
+you, catches the redirect locally, does the token exchange, and prints the Token/Refresh
+Token ready to paste into step 5:
+
+```bash
+python3 scripts/get_honeywell_token.py --client-id YOUR_CONSUMER_KEY --client-secret YOUR_CONSUMER_SECRET
+```
+
+Before running it, set your Honeywell app's callback URL to `http://localhost:8087/callback`
+(or pass `--redirect-uri` to match whatever you've configured). No dependencies beyond
+Python 3 - it only talks to `api.honeywell.com` and a local port on your own machine.
+
+If you'd rather do it by hand (or can't run Python locally), the manual steps are below.
+
+### 3. Bind your Openhab Honeywell app to your Honeywell thermostats account (manual):
 
 Open your browser with this URL
 
@@ -58,7 +76,7 @@ Next, you will be forwarded to your callback URL, in the URL you will notice "co
 in the following example, our code is "EtggGS9x": 
 https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=
 
-### 4. Get Access Token:
+### 4. Get Access Token (manual):
 In order to get the Access Token, you will need to do a POST request to ```https://api.honeywell.com/oauth2/token```
 with your code from step number 3 and your `Consumer Key`, `Consumer Secret`, and `call back url` from your openhab App 
 
@@ -143,3 +161,7 @@ Frame label="Thermostat"{
 1. Adding last update time
 2. Adding internal isAlive status
 3. Improving API integration to avoid HoneywellHome rate limiter issue
+4. Fully in-binding OAuth flow (using openHAB core's `OAuthFactory`/servlet redirect, the
+   pattern several other bindings use) so setup is just Consumer Key/Secret and a click
+   to authorize - no separate script or manual curl needed at all. `scripts/get_honeywell_token.py`
+   is a stop-gap for that until this lands.

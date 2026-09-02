@@ -69,14 +69,15 @@ public class HoneywellHomeHandler extends BaseBridgeHandler {
             String refreshToken = config.refreshToken;
 
             try {
-                logger.debug("Initializing HoneywellClient with consumerKey: {}, consumerSecret: {}, token: {}, refreshToken: {}", consumerKey, consumerSecret, token,
-                        refreshToken);
+                // Never log consumerSecret/token/refreshToken - they're secrets, not diagnostic data.
+                logger.debug("Initializing HoneywellClient for consumerKey: {}", consumerKey);
                 this.honeywellClient = new HoneywellClient(scheduler, this.httpClient, consumerKey, consumerSecret, token,
                         refreshToken);
                 if (this.honeywellClient.isValid()) {
                     updateStatus(ThingStatus.ONLINE);
                 } else {
-                    updateStatus(ThingStatus.OFFLINE);
+                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                            "Honeywell rejected the provided credentials - re-authorize per the README and update the token/refreshToken");
                 }
             } catch (Exception e) {
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,

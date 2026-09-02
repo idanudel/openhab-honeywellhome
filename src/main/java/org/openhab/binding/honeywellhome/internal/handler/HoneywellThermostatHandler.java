@@ -20,9 +20,11 @@ import org.openhab.binding.honeywellhome.internal.HoneywellHomeThermostatConfigu
 import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.QuantityType;
 import org.openhab.core.library.types.StringType;
+import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseThingHandler;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
@@ -68,26 +70,31 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
             startRefreshTask();
             return;
         }
+        HoneywellClient client = getHoneywellClient();
+        if (client == null) {
+            logger.warn("Ignoring command {} for channel {} - Honeywell bridge is not ready", command, channelUID.getId());
+            return;
+        }
         if (command instanceof DecimalType) {
             if (COOL_SET_POINT.equals(channelUID.getId())) {
                 this.changeableValuesState.coolSetpoint = ((DecimalType) command).intValue();
-                this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
+                client.changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
             }
             if (HEAT_SET_POINT.equals(channelUID.getId())) {
                 this.changeableValuesState.heatSetpoint = ((DecimalType) command).intValue();
-                this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
+                client.changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
             }
         }
         if (HEAT_COOL_MODE.equals(channelUID.getId())) {
             this.changeableValuesState.heatCoolMode = command.toString();
-            this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
+            client.changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
         }
         if (MODE.equals(channelUID.getId())) {
             this.changeableValuesState.mode = command.toString();
-            this.getHoneywellClient().changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
+            client.changeThermostatsSetting(deviceId, locationId, this.changeableValuesState);
         }
         if (FAN_STATUS.equals(channelUID.getId())) {
-            this.getHoneywellClient().changeThermostatsFanSetting(deviceId, locationId, command.toString());
+            client.changeThermostatsFanSetting(deviceId, locationId, command.toString());
         }
 
     }
@@ -133,33 +140,42 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
         try {
             String locationId = config.locationId;
             String deviceId = config.deviceId;
-            if (getHoneywellClient() != null) {
-                GetThermostatsStatusResponse getThermostatsStatusResponse = getHoneywellClient().getThermostatsDevice(deviceId, locationId);
-                if(getThermostatsStatusResponse!=null) {
-                    updateStatus(ThingStatus.ONLINE);
-                    this.changeableValuesState = getThermostatsStatusResponse.changeableValues; // we need to store this data because in order to change one of the values we need to provide all of them;
-                    updateState(COOL_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.coolSetpoint+""));
-                    updateState(HEAT_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.heatSetpoint+""));
-                    updateState(THERMOSTAT_SET_POINT_STATUS, new StringType(getThermostatsStatusResponse.changeableValues.thermostatSetpointStatus));
-                    updateState(HEAT_COOL_MODE, new StringType(getThermostatsStatusResponse.changeableValues.heatCoolMode));
-                    updateState(MODE, new StringType(getThermostatsStatusResponse.changeableValues.mode));
-                    updateState(DISPLAYED_OUT_DOOR_HUMIDITY, new DecimalType(getThermostatsStatusResponse.displayedOutdoorHumidity+""));
-                    updateState(USER_DEFINED_DEVICE_NAME, new StringType(getThermostatsStatusResponse.userDefinedDeviceName));
-                    updateState(NAME, new StringType(getThermostatsStatusResponse.name));
-                    updateState(IS_ALIVE, new StringType(getThermostatsStatusResponse.isAlive+""));
-                    updateState(UNITS, new StringType(getThermostatsStatusResponse.units));
-                    updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature+""));
-                    updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature+""));
-                    if(getThermostatsStatusResponse.currentSchedulePeriod!=null) {
-                        updateState(CURRENT_SCHEDULE_PERIOD, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.period));
-                        updateState(CURRENT_SCHEDULE_DAY, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.day));
-                    }
-                    if(getThermostatsStatusResponse.settings != null &&
-                       getThermostatsStatusResponse.settings.fan != null &&
-                       getThermostatsStatusResponse.settings.fan.changeableValues != null) {
-                         updateState(FAN_STATUS, new StringType(getThermostatsStatusResponse.settings.fan.changeableValues.mode));
-                    }
-}
+            HoneywellClient client = getHoneywellClient();
+            if (client == null) {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_UNINITIALIZED, "Honeywell bridge is not initialized yet");
+                return;
+            }
+            GetThermostatsStatusResponse getThermostatsStatusResponse = client.getThermostatsDevice(deviceId, locationId);
+            if(getThermostatsStatusResponse!=null) {
+                updateStatus(ThingStatus.ONLINE);
+                this.changeableValuesState = getThermostatsStatusResponse.changeableValues; // we need to store this data because in order to change one of the values we need to provide all of them;
+                updateState(COOL_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.coolSetpoint+""));
+                updateState(HEAT_SET_POINT, new DecimalType(getThermostatsStatusResponse.changeableValues.heatSetpoint+""));
+                updateState(THERMOSTAT_SET_POINT_STATUS, new StringType(getThermostatsStatusResponse.changeableValues.thermostatSetpointStatus));
+                updateState(HEAT_COOL_MODE, new StringType(getThermostatsStatusResponse.changeableValues.heatCoolMode));
+                updateState(MODE, new StringType(getThermostatsStatusResponse.changeableValues.mode));
+                updateState(DISPLAYED_OUT_DOOR_HUMIDITY, new DecimalType(getThermostatsStatusResponse.displayedOutdoorHumidity+""));
+                updateState(USER_DEFINED_DEVICE_NAME, new StringType(getThermostatsStatusResponse.userDefinedDeviceName));
+                updateState(NAME, new StringType(getThermostatsStatusResponse.name));
+                updateState(IS_ALIVE, new StringType(getThermostatsStatusResponse.isAlive+""));
+                updateState(UNITS, new StringType(getThermostatsStatusResponse.units));
+                updateState(INDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.indoorTemperature+""));
+                updateState(OUTDOOR_TEMPERATURE, new DecimalType(getThermostatsStatusResponse.outdoorTemperature+""));
+                if(getThermostatsStatusResponse.currentSchedulePeriod!=null) {
+                    updateState(CURRENT_SCHEDULE_PERIOD, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.period));
+                    updateState(CURRENT_SCHEDULE_DAY, new StringType(getThermostatsStatusResponse.currentSchedulePeriod.day));
+                }
+                if(getThermostatsStatusResponse.settings != null &&
+                   getThermostatsStatusResponse.settings.fan != null &&
+                   getThermostatsStatusResponse.settings.fan.changeableValues != null) {
+                     updateState(FAN_STATUS, new StringType(getThermostatsStatusResponse.settings.fan.changeableValues.mode));
+                }
+            } else if (client.isAuthBroken()) {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                        "Honeywell authorization is invalid or expired - re-authorize per the README and update the Bridge's token/refreshToken");
+            } else {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+                        "Could not reach the Honeywell API - will keep retrying");
             }
         } catch (Exception e) {
             updateStatus(ThingStatus.OFFLINE);
@@ -168,9 +184,12 @@ public class HoneywellThermostatHandler extends BaseThingHandler {
 
     }
 
-    private HoneywellClient getHoneywellClient() {
-        HoneywellHomeHandler honeywellHomeHandler = (HoneywellHomeHandler) getBridge().getHandler(); // todo make it safe
-        return honeywellHomeHandler.getHoneywellClient();
+    private @Nullable HoneywellClient getHoneywellClient() {
+        Bridge bridge = getBridge();
+        if (bridge == null || !(bridge.getHandler() instanceof HoneywellHomeHandler)) {
+            return null;
+        }
+        return ((HoneywellHomeHandler) bridge.getHandler()).getHoneywellClient();
     }
 
     @Override
