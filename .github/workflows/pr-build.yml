@@ -27,5 +27,11 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      - name: Build and verify
-        run: mvn -B clean verify
+      # Deliberately `package`, not `verify`: `verify` triggers the sat-plugin checkstyle
+      # report goal, which resolves suppressions.xml relative to pom.xml's <basedirRoot>
+      # - hardcoded to the original dev's local Mac path and never fixed up here (the
+      # directory-maven-plugin execution that's supposed to compute it is disabled via
+      # <phase>none</phase>). `package` is what the release workflow already uses
+      # successfully, so it validates a real compile+test without hitting that.
+      - name: Build and package
+        run: mvn -B clean package
