@@ -32,6 +32,17 @@ jobs:
       - name: Build and package JAR
         run: mvn clean package -B
 
+      # Uploaded as a plain workflow artifact (no token/secret needed) rather than
+      # depending on the "Create release" step below, which needs VERSIONS_TOKEN and
+      # currently fails with "Bad credentials" (that secret needs rotating separately).
+      # This keeps the built jar retrievable even while the release/tag/publish part
+      # of this job is broken.
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: honeywellhome-jar
+          path: target/org.openhab.binding.honeywellhome-*.jar
+
       - name: Prepare Release
         run: |
           # Get Version
