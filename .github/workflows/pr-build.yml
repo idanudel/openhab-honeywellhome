@@ -1,0 +1,37 @@
+name: PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
+      # Deliberately `package`, not `verify`: `verify` triggers the sat-plugin checkstyle
+      # report goal, which resolves suppressions.xml relative to pom.xml's <basedirRoot>
+      # - hardcoded to the original dev's local Mac path and never fixed up here (the
+      # directory-maven-plugin execution that's supposed to compute it is disabled via
+      # <phase>none</phase>). `package` is what the release workflow already uses
+      # successfully, so it validates a real compile+test without hitting that.
+      - name: Build and package
+        run: mvn -B clean package
