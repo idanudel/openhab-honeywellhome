@@ -11,6 +11,12 @@ _Since the binding uses a polling mechanism, there may be some latency depending
 ***
 Binding Jar available [Here](https://github.com/idanudel/openhab-honeywellhome/releases)
 ***
+**Note (Sep 2026):** Resideo migrated the API from `api.honeywell.com` to `api.honeywellhome.com`
+- the old domain's certificate was left to expire, breaking every integration that used it (openHAB,
+Home Assistant's Lyric integration, etc. - see
+[home-assistant/core#171362](https://github.com/home-assistant/core/issues/171362)). This binding
+(and this README) now point at the new domain.
+***
 ## Honeywell Home Api Rate limiter
 Seems like HoneywellHome Api allow 300 requests per hour per "openhab app" - more than that will start get a 429 response,
 that means if you have two thermostats you will need to change your refresh interval to 30 sec.
@@ -52,7 +58,7 @@ python3 scripts/get_honeywell_token.py --client-id YOUR_CONSUMER_KEY --client-se
 
 Before running it, set your Honeywell app's callback URL to `http://localhost:8087/callback`
 (or pass `--redirect-uri` to match whatever you've configured). No dependencies beyond
-Python 3 - it only talks to `api.honeywell.com` and a local port on your own machine.
+Python 3 - it only talks to `api.honeywellhome.com` and a local port on your own machine.
 
 If you'd rather do it by hand (or can't run Python locally), the manual steps are below.
 
@@ -60,7 +66,7 @@ If you'd rather do it by hand (or can't run Python locally), the manual steps ar
 
 Open your browser with this URL
 
-```https://api.honeywell.com/oauth2/authorize?response_type=code&redirect_uri={your Honeywell openhab app Callback URL }&client_id={your Honeywell openhab app client_id}```
+```https://api.honeywellhome.com/oauth2/authorize?response_type=code&redirect_uri={your Honeywell openhab app Callback URL }&client_id={your Honeywell openhab app client_id}```
 
 * your “Honeywell openhab app Callback URL” & your “Honeywell openhab app client_id” can be found in your developer account under “My APPS” (client_id = Consumer Key)
 
@@ -77,7 +83,7 @@ in the following example, our code is "EtggGS9x":
 https://myopenhab.org/static/honeywellhome-oauth2.html?code=EtggGS9x&scope=
 
 ### 4. Get Access Token (manual):
-In order to get the Access Token, you will need to do a POST request to ```https://api.honeywell.com/oauth2/token```
+In order to get the Access Token, you will need to do a POST request to ```https://api.honeywellhome.com/oauth2/token```
 with your code from step number 3 and your `Consumer Key`, `Consumer Secret`, and `call back url` from your openhab App 
 
 you will need to create a basic auth token with your `Consumer Key` and `Consumer Secret, you can use [this]([https://developer.honeywellhome.com/api-methods](https://mixedanalytics.com/tools/basic-authentication-generator/)) for that (`Consumer Key`:`Consumer Secret`),
@@ -89,7 +95,7 @@ redirect_uri = {your app redirect_uri} (don't know y they need it)
 so it will look like curl:
 
 ```
-curl --location 'https://api.honeywell.com/oauth2/token' \
+curl --location 'https://api.honeywellhome.com/oauth2/token' \
 --header 'Authorization: Basic {YOUR_BASIC_AUTH TOKEN}' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
