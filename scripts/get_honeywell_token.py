@@ -34,8 +34,10 @@ import urllib.parse
 import urllib.request
 import webbrowser
 
-AUTHORIZE_URL = "https://api.honeywell.com/oauth2/authorize"
-TOKEN_URL = "https://api.honeywell.com/oauth2/token"
+# Resideo migrated the API off api.honeywell.com (whose cert was left to expire, breaking every
+# integration - see github.com/home-assistant/core/issues/171362) to api.honeywellhome.com.
+AUTHORIZE_URL = "https://api.honeywellhome.com/oauth2/authorize"
+TOKEN_URL = "https://api.honeywellhome.com/oauth2/token"
 
 
 def parse_args():
