@@ -41,6 +41,7 @@ public class HoneywellHomeBindingConstants {
     public static final String HEAT_COOL_MODE = "heatCoolMode";
     public static final String MODE = "mode";
     public static final String FAN_STATUS = "fanStatus";
+    public static final String OPERATION_STATUS = "operationStatus";
 
 
     public static final String DISPLAYED_OUT_DOOR_HUMIDITY = "displayedOutdoorHumidity";
